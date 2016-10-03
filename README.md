@@ -1,5 +1,7 @@
 # Geta.AutoMapper
 
+![](http://tc.geta.no/app/rest/builds/buildType:(id:TeamFrederik_AutoMapper_Debug)/statusIcon)
+
 ```
 Install-Package Geta.AutoMapper
 ```
