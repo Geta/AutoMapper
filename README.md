@@ -18,10 +18,11 @@ Make sure to add Geta.AutoMapper to TaskRegistry in your project.
 scan.AssembliesFromApplicationBaseDirectory(a => a.FullName.StartsWith("Foundation") || a.FullName.StartsWith("Geta.AutoMapper));
 ```
 ## Usage 
-We've included to interface that you can implement to IMapFrom<T> and IHaveCustomMappings.
+We've included to interface that you can implement to `IMapFrom<T>` and `IHaveCustomMappings`.
 
-IMapFrom<T> is used to automatically configure mapping between two objects.
+`IMapFrom<T>` is used to automatically configure mapping between two objects.
 
+```csharp
     public class Issue
     {
 	public int IssueID { get; set; }
@@ -57,11 +58,13 @@ IMapFrom<T> is used to automatically configure mapping between two objects.
 	[Required]
 	public string Body { get; set; }
     }
+```
 
-You can then simply call AutoMapper's Mapper.Map<EditIssueForm>(issue); to map from a domain Issue to an EditIssueForm. This of course also works with the Project() method: Issues.Project().To<EditIssueForm>().
+You can then simply call AutoMapper's `Mapper.Map<EditIssueForm>(issue);` to map from a domain Issue to an EditIssueForm. This of course also works with the Project() method: `Issues.Project().To<EditIssueForm>()`.
 
 Use IHaveCustomMappings for more advanced mapping scenarios. 
 
+```csharp
     public class AssignmentStatsViewModel : IHaveCustomMappings
     {
 	public string UserName { get; set; }
@@ -79,4 +82,4 @@ Use IHaveCustomMappings for more advanced mapping scenarios.
 		.ForMember(m => m.Other, opt => opt.MapFrom(u => u.Assignments.Count(i => i.IssueType == IssueType.Other)));
 	}
     }
-
+```
