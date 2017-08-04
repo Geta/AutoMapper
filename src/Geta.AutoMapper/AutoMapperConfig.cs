@@ -35,10 +35,14 @@ namespace Geta.AutoMapper
                               !t.IsInterface
                         select (IHaveCustomMappings)Activator.CreateInstance(t)).ToArray();
 
-            foreach (var map in maps)
-            {
-                map.CreateMappings(Mapper.Configuration);
-            }
+            Mapper.Initialize(
+                c =>
+                {
+                    foreach (var map in maps)
+                    {
+                        map.CreateMappings(c);
+                    }
+                });
         }
 
         private static void LoadStandardMappings(IEnumerable<Type> types)
@@ -54,10 +58,14 @@ namespace Geta.AutoMapper
                             Destination = t
                         }).ToArray();
 
-            foreach (var map in maps)
-            {
-                Mapper.CreateMap(map.Source, map.Destination);
-            }
+            Mapper.Initialize(
+                c =>
+                {
+                    foreach (var map in maps)
+                    {
+                        c.CreateMap(map.Source, map.Destination);
+                    }
+                });
         }
     }
 }
