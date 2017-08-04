@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using AutoMapper;
-using Foundation.Core.Infrastructure.Tasks;
 
 namespace Geta.AutoMapper
 {
-    public class AutoMapperConfig : IRunAtInit
+    public class AutoMapperConfig
     {
         public void Execute()
         {
