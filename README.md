@@ -12,10 +12,10 @@ Add this to your projects appsettings (the assembly with the mapping classes):
 <add key="AutoMapper:AssemblyName" value="assembly-name" />
 ```
 
-Make sure to add Geta.AutoMapper to TaskRegistry in your project.
+Make sure to call AutoMapperConfig.Execute() on application startup.
 
 ```csharp
-scan.AssembliesFromApplicationBaseDirectory(a => a.FullName.StartsWith("Foundation") || a.FullName.StartsWith("Geta.AutoMapper));
+AutoMapperConfig.Execute();
 ```
 ## Usage 
 We've included to interface that you can implement to `IMapFrom<T>` and `IHaveCustomMappings`.
