@@ -12,13 +12,13 @@ namespace Geta.AutoMapper
         {
             var assemblyName = ConfigurationManager.AppSettings["AutoMapper:AssemblyName"];
 
-            if (string.IsNullOrEmpty(assemblyName))
-            {
-                return;
-            }
+            if (string.IsNullOrEmpty(assemblyName)) return;
 
             // To scan all assemblies starting with:
-            var types = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.StartsWith(assemblyName)).SelectMany(a => a.GetExportedTypes()).ToList();
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(a => a.FullName.StartsWith(assemblyName))
+                .SelectMany(a => a.GetExportedTypes())
+                .ToList();
 
             LoadStandardMappings(types);
 
@@ -28,42 +28,36 @@ namespace Geta.AutoMapper
         private static void LoadCustomMappings(IEnumerable<Type> types)
         {
             var maps = (from t in types
-                        from i in t.GetInterfaces()
-                        where typeof(IHaveCustomMappings).IsAssignableFrom(t) &&
-                              !t.IsAbstract &&
-                              !t.IsInterface
-                        select (IHaveCustomMappings)Activator.CreateInstance(t)).ToArray();
+                from i in t.GetInterfaces()
+                where typeof(IHaveCustomMappings).IsAssignableFrom(t) &&
+                      !t.IsAbstract &&
+                      !t.IsInterface
+                select (IHaveCustomMappings) Activator.CreateInstance(t)).ToArray();
 
             Mapper.Initialize(
                 c =>
                 {
-                    foreach (var map in maps)
-                    {
-                        map.CreateMappings(c);
-                    }
+                    foreach (var map in maps) map.CreateMappings(c);
                 });
         }
 
         private static void LoadStandardMappings(IEnumerable<Type> types)
         {
             var maps = (from t in types
-                        from i in t.GetInterfaces()
-                        where i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMapFrom<>) &&
-                              !t.IsAbstract &&
-                              !t.IsInterface
-                        select new
-                        {
-                            Source = i.GetGenericArguments()[0],
-                            Destination = t
-                        }).ToArray();
+                from i in t.GetInterfaces()
+                where i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMapFrom<>) &&
+                      !t.IsAbstract &&
+                      !t.IsInterface
+                select new
+                {
+                    Source = i.GetGenericArguments()[0],
+                    Destination = t
+                }).ToArray();
 
             Mapper.Initialize(
                 c =>
                 {
-                    foreach (var map in maps)
-                    {
-                        c.CreateMap(map.Source, map.Destination);
-                    }
+                    foreach (var map in maps) c.CreateMap(map.Source, map.Destination);
                 });
         }
     }
