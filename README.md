@@ -73,7 +73,7 @@ Use IHaveCustomMappings for more advanced mapping scenarios.
 	public int Support { get; set; }
 	public int Other { get; set; }
 
-	public void CreateMappings(IConfiguration configuration)
+	public void CreateMappings(IMapperConfigurationExpression configuration)
 	{
 	    configuration.CreateMap<ApplicationUser, AssignmentStatsViewModel>()
 		.ForMember(m => m.Enhancements, opt => opt.MapFrom(u => u.Assignments.Count(i => i.IssueType == IssueType.Enhancement)))
