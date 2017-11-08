@@ -8,7 +8,7 @@ namespace Geta.AutoMapper
 {
     public class AutoMapperConfig
     {
-        public void Execute()
+        public static void Execute()
         {
             var assemblyName = ConfigurationManager.AppSettings["AutoMapper:AssemblyName"];
 
