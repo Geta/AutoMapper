@@ -9,6 +9,13 @@ namespace Geta.AutoMapper
 {
     public class AutoMapperConfig : IRunAtInit
     {
+        private readonly IMapperConfiguration _configuration;
+
+        public AutoMapperConfig(IMapperConfiguration configuration)
+        {
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        }
+
         public void Execute()
         {
             var assemblyName = ConfigurationManager.AppSettings["AutoMapper:AssemblyName"];
@@ -26,7 +33,7 @@ namespace Geta.AutoMapper
             LoadCustomMappings(types);
         }
 
-        private static void LoadCustomMappings(IEnumerable<Type> types)
+        private void LoadCustomMappings(IEnumerable<Type> types)
         {
             var maps = (from t in types
                         from i in t.GetInterfaces()
@@ -37,11 +44,11 @@ namespace Geta.AutoMapper
 
             foreach (var map in maps)
             {
-                map.CreateMappings(Mapper.Configuration);
+                map.CreateMappings(_configuration);
             }
         }
 
-        private static void LoadStandardMappings(IEnumerable<Type> types)
+        private void LoadStandardMappings(IEnumerable<Type> types)
         {
             var maps = (from t in types
                         from i in t.GetInterfaces()
@@ -56,7 +63,7 @@ namespace Geta.AutoMapper
 
             foreach (var map in maps)
             {
-                Mapper.CreateMap(map.Source, map.Destination);
+                _configuration.CreateMap(map.Source, map.Destination);
             }
         }
     }
