@@ -2,6 +2,14 @@
 
 ![](http://tc.geta.no/app/rest/builds/buildType:(id:TeamFrederik_AutoMapper_Debug)/statusIcon)
 
+## Description
+AutoMapper is a simple little library built to solve a deceptively complex problem - getting rid of code that mapped one object to another. This package contains two interfaces to get started with AutoMapper. 
+
+## Features
+* Configurations in appsetting section
+* IMapFrom<T> interface is used to automatically configure mapping between two objects
+* IHaveCustomMappings interface for more advanced mapping scenarios
+
 ```
 Install-Package Geta.AutoMapper
 ```
@@ -18,7 +26,7 @@ Make sure to call AutoMapperConfig.Execute() on application startup.
 AutoMapperConfig.Execute();
 ```
 ## Usage 
-We've included to interface that you can implement to `IMapFrom<T>` and `IHaveCustomMappings`.
+We've included two interface that you can implement to `IMapFrom<T>` and `IHaveCustomMappings`.
 
 `IMapFrom<T>` is used to automatically configure mapping between two objects.
 
@@ -83,3 +91,6 @@ Use IHaveCustomMappings for more advanced mapping scenarios.
 	}
     }
 ```
+
+## Package maintainer
+https://github.com/frederikvig
