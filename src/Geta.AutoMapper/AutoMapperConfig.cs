@@ -1,64 +1,42 @@
-﻿using System;
+﻿// Copyright (c) Geta Digital. All rights reserved.
+// Licensed under Apache-2.0. See the LICENSE file in the project root for more information
+using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
+using System.Reflection;
 using AutoMapper;
 
 namespace Geta.AutoMapper
 {
     public class AutoMapperConfig
     {
-        public static void Execute()
+        /// <summary>
+        ///     Scans for AutoMapper mappings in classes that are marked with "AutoMap" attribute
+        ///     or implements "ICustomMappings" interface and adds them to AutoMapper configuration.
+        /// </summary>
+        /// <param name="mapConfig">AutoMapper IMapperConfigurationExpression</param>
+        /// <param name="assembliesToScan">Assemblies to scan</param>
+        public static void LoadMappings(IMapperConfigurationExpression mapConfig, params Assembly[] assembliesToScan)
         {
-            var assemblyName = ConfigurationManager.AppSettings["AutoMapper:AssemblyName"];
-
-            if (string.IsNullOrEmpty(assemblyName)) return;
-
-            // To scan all assemblies starting with:
-            var types = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(a => a.FullName.StartsWith(assemblyName))
-                .SelectMany(a => a.GetExportedTypes())
-                .ToList();
-
-            LoadStandardMappings(types);
-
-            LoadCustomMappings(types);
+            foreach (var assembly in assembliesToScan)
+            {
+                mapConfig.AddMaps(assembly);
+            }
+            
+            var types = assembliesToScan.SelectMany(a => a.GetExportedTypes()).ToList();
+            LoadCustomMappings(types, mapConfig);
         }
 
-        private static void LoadCustomMappings(IEnumerable<Type> types)
+        private static void LoadCustomMappings(IEnumerable<Type> types, IMapperConfigurationExpression mapConfig)
         {
             var maps = (from t in types
                 from i in t.GetInterfaces()
-                where typeof(IHaveCustomMappings).IsAssignableFrom(t) &&
+                where typeof(ICustomMapping).IsAssignableFrom(t) &&
                       !t.IsAbstract &&
                       !t.IsInterface
-                select (IHaveCustomMappings) Activator.CreateInstance(t)).ToArray();
+                select (ICustomMapping) Activator.CreateInstance(t)).ToArray();
 
-            Mapper.Initialize(
-                c =>
-                {
-                    foreach (var map in maps) map.CreateMappings(c);
-                });
-        }
-
-        private static void LoadStandardMappings(IEnumerable<Type> types)
-        {
-            var maps = (from t in types
-                from i in t.GetInterfaces()
-                where i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMapFrom<>) &&
-                      !t.IsAbstract &&
-                      !t.IsInterface
-                select new
-                {
-                    Source = i.GetGenericArguments()[0],
-                    Destination = t
-                }).ToArray();
-
-            Mapper.Initialize(
-                c =>
-                {
-                    foreach (var map in maps) c.CreateMap(map.Source, map.Destination);
-                });
+            foreach (var map in maps) map.CreateMapping(mapConfig);
         }
     }
 }
