@@ -3,94 +3,91 @@
 ![](http://tc.geta.no/app/rest/builds/buildType:(id:TeamFrederik_AutoMapper_Debug)/statusIcon)
 
 ## Description
-AutoMapper is a simple little library built to solve a deceptively complex problem - getting rid of code that mapped one object to another. This package contains two interfaces to get started with AutoMapper. 
+Geta.AutoMapper is a small addition for Automapper library to simplify mapping configuration. It scans for existing mappings and provides a standardized way to do a custom mappings with automapper using `ICustomMapping` interface.
 
 ## Features
-* Configurations in appsetting section
-* IMapFrom<T> interface is used to automatically configure mapping between two objects
-* IHaveCustomMappings interface for more advanced mapping scenarios
+* Scans for existing mappings in the solution
+* Use `AutoMap` attribute to cover simple mapping cases (default functionality in AutoMapper - https://docs.automapper.org/en/stable/Attribute-mapping.html)
+* Use `ICustomMapping` interface for a custom mapping scenarios
 
+## How to get started?
 ```
 Install-Package Geta.AutoMapper
 ```
 
-Add this to your projects appsettings (the assembly with the mapping classes):
-
-```xml
-<add key="AutoMapper:AssemblyName" value="assembly-name" />
-```
-
-Make sure to call AutoMapperConfig.Execute() on application startup.
+Make sure to call `AutoMapperConfig.LoadMappings(...)` on application startup.
 
 ```csharp
-AutoMapperConfig.Execute();
+var configExpression = new MapperConfigurationExpression();
+
+/* can add custom configurations if needed */
+
+AutoMapperConfig.LoadMappings(configExpression, Assembly.GetExecutingAssembly());
+
+var mapper = new MapperConfiguration(configExpression).CreateMapper();
 ```
 ## Usage 
-We've included two interface that you can implement to `IMapFrom<T>` and `IHaveCustomMappings`.
+You can use two ways how to configure the mapping between two types:
+1. Decorate destination type with `AutoMap` attribute (functionality already available in AutoMapper);
+2. Destination type implementing `ICustomMapping` interface.
 
-`IMapFrom<T>` is used to automatically configure mapping between two objects.
 
 ```csharp
-    public class Issue
-    {
-	public int IssueID { get; set; }
+public class AttributeMappingTestModel
+{
+	public int SomeProperty { get; set; }
 
-	public ApplicationUser Creator { get; set; }
+	public AttributeMappingTestChildModel Child { get; set; }
 
-	public ApplicationUser AssignedTo { get; set; }
+}
 
-	public string Subject { get; set; }
-	
-	public string Body { get; set; }
+public class AttributeMappingTestChildModel
+{
+	public string Property { get; set; }
+}
 
-	public DateTime CreatedAt { get; set; }
-	public IssueType IssueType { get; set; }
-    }
+[AutoMap(typeof(AttributeMappingTestModel))]
+public class AttributeMappingTestViewModel
+{
+	[SourceMember(nameof(AttributeMappingTestModel.SomeProperty))]
+	public int PropertyA { get; set; }
 
-    public class EditIssueForm : IMapFrom<Domain.Issue>
-    {
-	[HiddenInput]
-	public int IssueID { get; set; }
-
-	[ReadOnly(true)]
-	public string CreatorUserName { get; set; }
-
-	[Required]
-	public string Subject { get; set; }
-
-	public IssueType IssueType { get; set; }
-	
-	[Display(Name = "Assigned To")]
-	public string AssignedToUserName { get; set; }
-		
-	[Required]
-	public string Body { get; set; }
-    }
+	public string ChildProperty { get; set; }
+}
 ```
 
-You can then simply call AutoMapper's `Mapper.Map<EditIssueForm>(issue);` to map from a domain Issue to an EditIssueForm. This of course also works with the Project() method: `Issues.Project().To<EditIssueForm>()`.
-
-Use IHaveCustomMappings for more advanced mapping scenarios. 
+You can then simply call AutoMapper's `mapper.Map<AttributeMappingTestViewModel>(modelToMap);` to map from a `AttributeTestModel` to an `AttributeTestViewModel`.
+```
+Note: `SourceMember` attribute isn't working for child object property mapping configurations. If destination object propery isn't following naming pattern {PropertyName}{ChildPropertyName} you will have to use custom mapping approach.
+```
+Use `ICustomMappings` for more advanced mapping scenarios. 
 
 ```csharp
-    public class AssignmentStatsViewModel : IHaveCustomMappings
-    {
-	public string UserName { get; set; }
-	public int Enhancements { get; set; }
-	public int Bugs { get; set; }
-	public int Support { get; set; }
-	public int Other { get; set; }
+public class CustomMappingTestModel
+{
+	public int SomeProperty { get; set; }
+	public DateTime OtherProperty { get; set; }
 
-	public void CreateMappings(IMapperConfigurationExpression configuration)
+	public CustomMappingChildModel Child { get; set; }
+
+}
+
+public class CustomMappingChildModel
+{
+	public string SomeProperty { get; set; }
+}
+
+public class CustomMappingTestViewModel : ICustomMapping
+{
+	public int Property { get; set; }
+	public DateTime OtherProperty { get; set; }
+	public string ChildProperty { get; set; }
+	public void CreateMapping(IMapperConfigurationExpression configuration)
 	{
-	    configuration.CreateMap<ApplicationUser, AssignmentStatsViewModel>()
-		.ForMember(m => m.Enhancements, opt => opt.MapFrom(u => u.Assignments.Count(i => i.IssueType == IssueType.Enhancement)))
-		.ForMember(m => m.Bugs, opt => opt.MapFrom(u => u.Assignments.Count(i => i.IssueType == IssueType.Bug)))
-		.ForMember(m => m.Support, opt => opt.MapFrom(u => u.Assignments.Count(i => i.IssueType == IssueType.Support)))
-		.ForMember(m => m.Other, opt => opt.MapFrom(u => u.Assignments.Count(i => i.IssueType == IssueType.Other)));
+		configuration.CreateMap<CustomMappingTestModel, CustomMappingTestViewModel>()
+			.ForMember(d => d.ChildProperty, o => o.MapFrom(s => s.Child.SomeProperty))
+			.ForMember(d => d.Property, o => o.MapFrom(s => s.SomeProperty));
 	}
-    }
+}
 ```
 
-## Package maintainer
-https://github.com/frederikvig
