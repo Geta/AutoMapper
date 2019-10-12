@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>$id$</id>
+    <id>Geta.AutoMapper</id>
     <version>$version$</version>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
+    <authors>Geta</authors>
+    <owners>Geta</owners>
     <projectUrl>https://github.com/Geta/AutoMapper</projectUrl>
-	<copyright>$copyright$</copyright>
+    <copyright>Copyright © Geta 2019</copyright>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
+    <description>Geta.AutoMapper is a small addition for AutoMapper library to simplify mapping configuration. It scans for existing mappings and provides a standardized way to do a custom mappings with AutoMapper using ICustomMapping interface.</description>
     <tags>Geta Foundation AutoMapper library</tags>
     <dependencies>
       <dependency id="AutoMapper" version="9.*" />
