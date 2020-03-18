@@ -1,16 +1,121 @@
-# Geta.AutoMapper
+# Geta Mapping
+
+Geta Mapping is a project for common mapping logic. It consists of two libraries: [Geta.Mapping](#getamapping) and [Geta.AutoMapper](#getaautomapper).
+
+## Geta.Mapping
+
+### Description
+
+Geta.Mapping is a library with abstractions for common mapping logic.
+
+### Installation
+
+```
+Install-Package Geta.Mapping
+```
+
+### DI Configuration
+
+For `StructureMap` or `Lamar` configure interfaces to automatically connect to implementations:
+
+```csharp
+Scan(x =>
+{
+    x.TheCallingAssembly();
+    x.WithDefaultConventions();
+    x.ConnectImplementationsToTypesClosing(typeof(IMapper<,>));
+    x.ConnectImplementationsToTypesClosing(typeof(ICreateFrom<,>));
+});
+```
+
+### Usage
+
+Then create a mapping class you want to map one object to another. Inherit from `IMapper<TFrom, TTo>`.
+
+```csharp
+public class MyPocoToMyDtoMapper : IMapper<MyPoco, MyDto>
+{
+    public virtual void Map(MyPoco from, MyDto to)
+    {
+        to.Name = from.Name;
+    }
+}
+```
+
+This mapping implementation will work for any classes, even for those that has no parameter-less constructor.
+
+If your destination class has a parameter-less constructor, then you can implement `Mapper<TFrom, TTo>`.
+
+```csharp
+public class MyPocoToMyDtoMapper : Mapper<MyPoco, MyDto>
+{
+    public override void Map(MyPoco from, MyDto to)
+    {
+        to.Name = from.Name;
+    }
+}
+```
+
+Now you can use these mapper by injecting it.
+
+When you want to map one object to other, then use `IMapper<TFrom, TTo>` interface.
+
+```csharp
+public class MyController
+{
+    private readonly IMapper<MyPoco, MyDto> _myMapper;
+
+    public MyController(IMapper<MyPoco, MyDto> myMapper)
+    {
+        _myMapper = myMapper;
+    }
+    
+    public IActionResult Index()
+    {
+        var myPoco = // Get a source object from DB or somewhere else
+        var myDto = new MyDto(true); // Instantiating _myDto_ manually as there is no parameter-less contructor
+        _myMapper.Map(myPoco, myDto);
+
+        // ...
+    }
+}
+```
+
+When you want to create one object from other and a destination object's class has a parameter-less constructor, your mapper should implement `Mapper<TFrom, TTo>` and you should inject `ICreateFrom<TFrom, TTo>`.
+
+```csharp
+public class MyController
+{
+    private readonly ICreateFrom<MyPoco, MyDto> _myDtoCreator;
+
+    public MyController(ICreateFrom<MyPoco, MyDto> myDtoCreator)
+    {
+        _myDtoCreator = myDtoCreator;
+    }
+    
+    public IActionResult Index()
+    {
+        var myPoco = // Get a source object from DB or somewhere else
+        var myDto = _myDtoCreator.Create(myPoco);
+
+        // ...
+    }
+}
+```
+
+## Geta.AutoMapper
 
 ![](http://tc.geta.no/app/rest/builds/buildType:(id:TeamFrederik_AutoMapper_Debug)/statusIcon)
 
-## Description
+### Description
 Geta.AutoMapper is a small addition for Automapper library to simplify mapping configuration. It scans for existing mappings and provides a standardized way to do a custom mappings with automapper using `ICustomMapping` interface.
 
-## Features
+### Features
 * Scans for existing mappings in the solution
 * Use `AutoMap` attribute to cover simple mapping cases (default functionality in AutoMapper - https://docs.automapper.org/en/stable/Attribute-mapping.html)
 * Use `ICustomMapping` interface for a custom mapping scenarios
 
-## How to get started?
+### How to get started?
 ```
 Install-Package Geta.AutoMapper
 ```
@@ -26,7 +131,7 @@ AutoMapperConfig.LoadMappings(configExpression, Assembly.GetExecutingAssembly())
 
 var mapper = new MapperConfiguration(configExpression).CreateMapper();
 ```
-## Usage 
+### Usage 
 You can use two ways how to configure the mapping between two types:
 1. Decorate destination type with `AutoMap` attribute (functionality already available in AutoMapper);
 2. Destination type implementing `ICustomMapping` interface.
