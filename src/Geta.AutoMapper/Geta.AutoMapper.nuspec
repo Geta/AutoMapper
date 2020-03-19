@@ -7,6 +7,7 @@
     <owners>Geta</owners>
     <projectUrl>https://github.com/Geta/AutoMapper</projectUrl>
     <copyright>Copyright © Geta 2019</copyright>
+    <iconUrl>https://cdn.geta.no/opensource/icons/Geta-logo-3.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Geta.AutoMapper is a small addition for AutoMapper library to simplify mapping configuration. It scans for existing mappings and provides a standardized way to do a custom mappings with AutoMapper using ICustomMapping interface.</description>
     <tags>Geta Foundation AutoMapper library</tags>
