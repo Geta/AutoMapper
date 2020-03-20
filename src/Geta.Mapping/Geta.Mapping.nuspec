@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Geta.Mapping</id>
+    <version>$version$</version>
+    <authors>Geta</authors>
+    <owners>Geta</owners>
+    <projectUrl>https://github.com/Geta/Mapping</projectUrl>
+    <copyright>Copyright © Geta 2020</copyright>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Geta.Mapping is a library with abstractions for common mapping logic.</description>
+    <tags>Geta Foundation Mapping abstractions library</tags>
+  </metadata>
+</package>
