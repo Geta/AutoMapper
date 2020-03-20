@@ -16,7 +16,7 @@ Install-Package Geta.Mapping
 
 ### DI Configuration
 
-For `StructureMap` or `Lamar` configure interfaces to automatically connect to implementations:
+For `StructureMap` or `Lamar`, configure interfaces to connect to implementations automatically:
 
 ```csharp
 Scan(x =>
@@ -42,7 +42,7 @@ public class MyPocoToMyDtoMapper : IMapper<MyPoco, MyDto>
 }
 ```
 
-This mapping implementation will work for any classes, even for those that has no parameter-less constructor.
+This mapping implementation will work for any classes, even for those that have a constructor with parameters.
 
 If your destination class has a parameter-less constructor, then you can implement `Mapper<TFrom, TTo>`.
 
@@ -56,9 +56,9 @@ public class MyPocoToMyDtoMapper : Mapper<MyPoco, MyDto>
 }
 ```
 
-Now you can use these mapper by injecting it.
+Now you can use this mapper by injecting it.
 
-When you want to map one object to other, then use `IMapper<TFrom, TTo>` interface.
+When you want to map one object to another, then use `IMapper<TFrom, TTo>` interface.
 
 ```csharp
 public class MyController
@@ -81,7 +81,7 @@ public class MyController
 }
 ```
 
-When you want to create one object from other and a destination object's class has a parameter-less constructor, your mapper should implement `Mapper<TFrom, TTo>` and you should inject `ICreateFrom<TFrom, TTo>`.
+When you want to create one object from another, and a destination object's class has a parameter-less constructor, your mapper should implement `Mapper<TFrom, TTo>` and you should inject `ICreateFrom<TFrom, TTo>`.
 
 ```csharp
 public class MyController
