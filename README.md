@@ -1,5 +1,8 @@
 # Geta Mapping
 
+* Master<br>
+![](http://tc.geta.no/app/rest/builds/buildType:(id:GetaPackages_GetaMapping_00ci),branch:master/statusIcon)
+
 Geta Mapping is a project for common mapping logic. It consists of two libraries: [Geta.Mapping](#getamapping) and [Geta.AutoMapper](#getaautomapper).
 
 ## Geta.Mapping
