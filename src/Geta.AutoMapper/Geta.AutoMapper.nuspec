@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Geta.AutoMapper is a small addition for AutoMapper library to simplify mapping configuration. It scans for existing mappings and provides a standardized way to do a custom mappings with AutoMapper using ICustomMapping interface.</description>
     <tags>Geta Foundation AutoMapper library</tags>
+    <repository type="git" url="URL" branch="BRANCH_NAME" commit="COMMIT" />
     <dependencies>
       <dependency id="AutoMapper" version="9.*" />
     </dependencies>
