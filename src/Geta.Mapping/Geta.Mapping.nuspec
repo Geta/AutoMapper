@@ -10,5 +10,6 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Geta.Mapping is a library with abstractions for common mapping logic.</description>
     <tags>Geta Foundation Mapping abstractions library</tags>
+    <repository type="git" url="URL" branch="BRANCH_NAME" commit="COMMIT" />
   </metadata>
 </package>
