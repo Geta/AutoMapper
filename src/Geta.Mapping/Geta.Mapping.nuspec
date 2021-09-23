@@ -7,6 +7,7 @@
     <owners>Geta</owners>
     <projectUrl>https://github.com/Geta/Mapping</projectUrl>
     <copyright>Copyright © Geta 2020</copyright>
+    <license type="expression">Apache-2.0</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Geta.Mapping is a library with abstractions for common mapping logic.</description>
     <tags>Geta Foundation Mapping abstractions library</tags>
