@@ -15,7 +15,7 @@ Geta.Mapping is a library with abstractions for common mapping logic.
 ### Installation
 
 ```
-Install-Package Geta.Mapping
+dotnet add package Geta.Mapping
 ```
 
 ### DI Configuration
