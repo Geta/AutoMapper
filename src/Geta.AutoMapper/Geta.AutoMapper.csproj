@@ -14,7 +14,7 @@
         <Description>Geta.AutoMapper is a small addition for AutoMapper library to simplify mapping configuration. It scans for existing mappings and provides a standardized way to do a custom mappings with AutoMapper using ICustomMapping interface.</Description>
         <PackageReleaseNotes>https://github.com/Geta/geta-mapping/blob/master/CHANGELOG.md</PackageReleaseNotes>
         <PackageTags>Mapping AutoMapper Geta</PackageTags>
-        <RepositoryUrl>URL</RepositoryUrl>
+        <RepositoryUrl>https://github.com/Geta/geta-mapping.git</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>

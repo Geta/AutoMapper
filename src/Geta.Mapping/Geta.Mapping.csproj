@@ -14,7 +14,7 @@
         <Description>Geta.Mapping is a library with abstractions for common mapping logic.</Description>
         <PackageReleaseNotes>https://github.com/Geta/geta-mapping/blob/master/src/Geta.Mapping/CHANGELOG.md</PackageReleaseNotes>
         <PackageTags>Mapping Geta</PackageTags>
-        <RepositoryUrl>URL</RepositoryUrl>
+        <RepositoryUrl>https://github.com/Geta/geta-mapping.git</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
