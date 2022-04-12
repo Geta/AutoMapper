@@ -8,7 +8,7 @@ using AutoMapper;
 
 namespace Geta.AutoMapper
 {
-    public class AutoMapperConfig
+    public static class AutoMapperConfig
     {
         /// <summary>
         ///     Scans for AutoMapper mappings in classes that are marked with "AutoMap" attribute
