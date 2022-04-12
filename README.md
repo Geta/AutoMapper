@@ -109,8 +109,6 @@ public class MyController
 
 ## Geta.AutoMapper
 
-![](http://tc.geta.no/app/rest/builds/buildType:(id:TeamFrederik_AutoMapper_Debug)/statusIcon)
-
 ### Description
 Geta.AutoMapper is a small addition for Automapper library to simplify mapping configuration. It scans for existing mappings and provides a standardized way to do a custom mappings with automapper using `ICustomMapping` interface.
 
