@@ -18,14 +18,14 @@ namespace Geta.AutoMapper.Tests.CustomMapping
         }
 
         [Theory, AutoData]
-        public void Type_can_be_successfully_mapped_to_destination_type_using_custom_mapping(CustomMappingTestModel modelToMap)
+        public void Type_can_be_successfully_mapped_to_destination_type_using_custom_mapping(
+            CustomMappingTestModel modelToMap)
         {
             var mappedModel = _mapper.Map<CustomMappingTestViewModel>(modelToMap);
 
             Assert.Equal(modelToMap.SomeProperty, mappedModel.Property);
             Assert.Equal(modelToMap.OtherProperty, mappedModel.OtherProperty);
             Assert.Equal(modelToMap.Child.SomeProperty, mappedModel.ChildProperty);
-
         }
     }
 }

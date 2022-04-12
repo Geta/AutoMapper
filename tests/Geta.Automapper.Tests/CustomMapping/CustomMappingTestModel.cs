@@ -8,7 +8,6 @@ namespace Geta.AutoMapper.Tests.CustomMapping
         public DateTime OtherProperty { get; set; }
 
         public CustomMappingChildModel Child { get; set; }
-
     }
 
     public class CustomMappingChildModel
